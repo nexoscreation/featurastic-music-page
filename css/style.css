@@ -39,7 +39,7 @@ svg {
 .container {
   background: rgba(110, 255, 250, 1);
   height: auto;
-  width: 80%;
+  max-width: 512px;
   border-radius: 0.5rem;
   padding: 0.2rem;
   clip-path: polygon(25px 0%, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0% 25px);
@@ -195,16 +195,4 @@ svg {
   .special-btn:hover {
     opacity: 0.75;
   }
-}
-
-
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  /* Your styles for tablets and laptops go here */
-
-  .container {
-    width: 40%;
-    /* Adjust font size for better readability on larger screens */
-  }
-
-  /* Add more styles as needed */
 }

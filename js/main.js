@@ -21,20 +21,20 @@ const songs = [
   {
     title: 'Track 1 - Sample Audio 1',
     artist: 'Bensound | Royalty Free Music',
-    coverPath: 'img/track1.jfif',
-    discPath: 'music/track1.mp3',
+    coverPath: './img/track1.jfif',
+    discPath: './music/track1.mp3',
   },
   {
     title: 'Track 2 - Sample Audio 2',
     artist: 'Bensound | Royalty Free Music',
-    coverPath: 'img/track2.jfif',
-    discPath: 'music/track2.mp3',
+    coverPath: './img/track2.jfif',
+    discPath: './music/track2.mp3',
   },
   {
     title: 'Track 3 - Sample Audio 3',
     artist: 'Bensound | Royalty Free Music',
-    coverPath: 'img/track3.jfif',
-    discPath: 'music/track3.mp3',
+    coverPath: './img/track3.jfif',
+    discPath: './music/track3.mp3',
   },
 ];
 
