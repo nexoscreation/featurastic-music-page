@@ -19,6 +19,54 @@ let songIndex = 0;
 // Song Data
 const songs = [
   {
+    title: 'Rameses B - Cybernet',
+    artist: 'NCS | NoCopyrightSounds',
+    coverPath: './img/track0.jfif',
+    discPath: './music/track0.mp3',
+  },
+  {
+    title: 'Clarx - Warzone',
+    artist: 'NCS | NoCopyrightSounds',
+    coverPath: './img/track4.jfif',
+    discPath: './music/track4.mp3',
+  },
+  {
+    title: 'NIVIRO - Without You',
+    artist: 'NCS | NoCopyrightSounds',
+    coverPath: './img/track5.jfif',
+    discPath: './music/track5.mp3',
+  },
+  {
+    title: 'Emin Nilsen - BANDIDO FUNK',
+    artist: 'NCS | NoCopyrightSounds',
+    coverPath: './img/track6.jfif',
+    discPath: './music/track6.mp3',
+  },
+  {
+    title: ' JVNA - Taking It Slow',
+    artist: 'NCS | NoCopyrightSounds',
+    coverPath: './img/track7.jfif',
+    discPath: './music/track7.mp3',
+  },
+  {
+    title: 'DJ FKU - DELTA',
+    artist: 'NCS | NoCopyrightSounds',
+    coverPath: './img/track8.jfif',
+    discPath: './music/track8.mp3',
+  },
+  {
+    title: 'Warriyo - Mortals',
+    artist: 'NCS | NoCopyrightSounds',
+    coverPath: './img/track9.jfif',
+    discPath: './music/track9.mp3',
+  },
+  {
+    title: 'Cartoon, Jéja - On & On',
+    artist: 'NCS | NoCopyrightSounds',
+    coverPath: './img/track10.jfif',
+    discPath: './music/track10.mp3',
+  },
+  {
     title: 'Track 1 - Sample Audio 1',
     artist: 'Bensound | Royalty Free Music',
     coverPath: './img/track1.jfif',
