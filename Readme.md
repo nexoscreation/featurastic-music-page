@@ -12,7 +12,7 @@ A modern and feature-rich music player with a sleek design.
 - Responsive design for seamless user experience on various devices
 
 ## Screenshots
-![IMG_20240307_195732](https://github.com/noscreator/featurastic-music-player/assets/152608930/629a5759-58cd-457b-b3d8-431d97be5908)
+![image](https://github.com/user-attachments/assets/5ea3f9d4-fce5-4dee-a560-39e17512c7dc)
 
 ## Usage
 
