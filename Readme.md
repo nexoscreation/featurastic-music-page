@@ -2,6 +2,8 @@
 
 A modern and feature-rich music player with a sleek design.
 
+[![Deploy Music Player Pages](https://github.com/nexoscreation/featurastic-music-page/actions/workflows/static.yml/badge.svg)](https://github.com/nexoscreation/featurastic-music-page/actions/workflows/static.yml)
+
 ## Features
 
 - Play, pause, and skip tracks
@@ -18,9 +20,9 @@ A modern and feature-rich music player with a sleek design.
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/noscreator/Featuristic-Music-Player.git
-   ```
+```bash
+https://github.com/nexoscreation/featurastic-music-page.git
+```
 
 2. Open `index.html` in your preferred web browser.
 
