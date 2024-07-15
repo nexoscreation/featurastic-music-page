@@ -2,7 +2,7 @@
 ![GitHub Latest Release](https://img.shields.io/github/v/release/nexoscreation/featurastic-music-page.svg?style=flat-square&color=cyan)
 ![GitHub License](https://img.shields.io/github/license/nexoscreation/featurastic-music-page.svg?style=flat-square&color=cyan)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/nexoscreation/featurastic-music-page.svg?style=flat-square&color=cyan)
-[![Deploy Music Player Pages](https://github.com/nexoscreation/featurastic-music-page/actions/workflows/static.yml/badge.svg)](https://github.com/nexoscreation/featurastic-music-page/actions/workflows/static.yml)
+[![Deploy Pages](https://github.com/nexoscreation/featurastic-music-page/actions/workflows/static.yml/badge.svg)](https://github.com/nexoscreation/featurastic-music-page/actions/workflows/static.yml)
 
 ---
 
@@ -46,7 +46,7 @@ Provide step-by-step instructions on how to install and set up your project.
 
 ### Usage
 
-> Type your message in the input field and press "Send" to send it to the chatbot, The chatbot will process your message and respond accordingly, Use the "Clear Chat History" button to clear the conversation history if needed.
+> Clone this repo and add your own music and play music with your website... 
 
 ---
 
