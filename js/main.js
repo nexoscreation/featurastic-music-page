@@ -1,224 +1,131 @@
-// DOM Elements
+const API_URL = "https://gist.githubusercontent.com/Funkmastercodex/0797e7e2d0e4c8cf0e8fdb424ac3d2e8/raw/featurastic-tracks.json"; // Replace with your own endpoint!
+
+// UI Elements
+const player = document.getElementById('music-player');
+const loading = document.getElementById('loading');
+const error = document.getElementById('error');
 const cover = document.getElementById('cover');
-const disc = document.getElementById('disc');
 const title = document.getElementById('title');
 const artist = document.getElementById('artist');
+const audio = document.getElementById('audio');
+const playBtn = document.getElementById('play');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
 const progressContainer = document.getElementById('progress-container');
 const progress = document.getElementById('progress');
-const timer = document.getElementById('timer');
-const duration = document.getElementById('duration');
-const prev = document.getElementById('prev');
-const play = document.getElementById('play');
-const next = document.getElementById('next');
-const volup = document.getElementById('volup');
-const voldown = document.getElementById('voldown');
+const currentTimeEl = document.getElementById('current-time');
+const durationEl = document.getElementById('duration');
 
-// Initial song index
-let songIndex = 0;
+let tracks = [];
+let currentIndex = 0;
+let isPlaying = false;
 
-// Song Data
-const songs = [
-  {
-    title: 'Rameses B - Cybernet',
-    artist: 'NCS | NoCopyrightSounds',
-    coverPath: './img/track0.jfif',
-    discPath: './music/track0.mp3',
-  },
-  {
-    title: 'Clarx - Warzone',
-    artist: 'NCS | NoCopyrightSounds',
-    coverPath: './img/track4.jfif',
-    discPath: './music/track4.mp3',
-  },
-  {
-    title: 'NIVIRO - Without You',
-    artist: 'NCS | NoCopyrightSounds',
-    coverPath: './img/track5.jfif',
-    discPath: './music/track5.mp3',
-  },
-  {
-    title: 'Emin Nilsen - BANDIDO FUNK',
-    artist: 'NCS | NoCopyrightSounds',
-    coverPath: './img/track6.jfif',
-    discPath: './music/track6.mp3',
-  },
-  {
-    title: ' JVNA - Taking It Slow',
-    artist: 'NCS | NoCopyrightSounds',
-    coverPath: './img/track7.jfif',
-    discPath: './music/track7.mp3',
-  },
-  {
-    title: 'DJ FKU - DELTA',
-    artist: 'NCS | NoCopyrightSounds',
-    coverPath: './img/track8.jfif',
-    discPath: './music/track8.mp3',
-  },
-  {
-    title: 'Warriyo - Mortals',
-    artist: 'NCS | NoCopyrightSounds',
-    coverPath: './img/track9.jfif',
-    discPath: './music/track9.mp3',
-  },
-  {
-    title: 'Cartoon, Jéja - On & On',
-    artist: 'NCS | NoCopyrightSounds',
-    coverPath: './img/track10.jfif',
-    discPath: './music/track10.mp3',
-  },
-  {
-    title: 'Track 1 - Sample Audio 1',
-    artist: 'Bensound | Royalty Free Music',
-    coverPath: './img/track1.jfif',
-    discPath: './music/track1.mp3',
-  },
-  {
-    title: 'Track 2 - Sample Audio 2',
-    artist: 'Bensound | Royalty Free Music',
-    coverPath: './img/track2.jfif',
-    discPath: './music/track2.mp3',
-  },
-  {
-    title: 'Track 3 - Sample Audio 3',
-    artist: 'Bensound | Royalty Free Music',
-    coverPath: './img/track3.jfif',
-    discPath: './music/track3.mp3',
-  },
-];
-
-// Event listener to load the initial song when the window is loaded
-window.addEventListener('load', function () {
-  loadSong(songs[songIndex]);
-});
-
-// Load the given song
-function loadSong(song) {
-  cover.src = song.coverPath;
-  disc.src = song.discPath;
-  title.textContent = song.title;
-  artist.textContent = song.artist;
-  
-  // Update duration when the disc is ready to play
-  disc.addEventListener('canplaythrough', function () {
-    const dur = disc.duration;
-    const mins = Math.floor(dur / 60).toString().padStart(2, '0');
-    const sec = Math.floor(dur % 60).toString().padStart(2, '0');
-    duration.textContent = `${mins}:${sec}`;
-  });
+// --- Fetch Tracks From API ---
+async function fetchTracks() {
+  showLoading();
+  try {
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error(`API error: ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) throw new Error('No tracks found.');
+    tracks = data;
+    hideLoading();
+    player.style.display = '';
+    loadTrack(0);
+  } catch (e) {
+    showError(`Unable to load tracks: ${e.message}`);
+  }
 }
 
-// Toggle play and pause
-function playPauseMedia() {
-  disc.paused ? disc.play() : disc.pause();
+function showLoading() {
+  loading.style.display = '';
+  error.style.display = 'none';
+  player.style.display = 'none';
 }
 
-// Update play/pause icon
-function updatePlayPauseIcon() {
-  const playIcon = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="#e7e5e4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 18V6l8 6-8 6Z"/></svg>`;
-  const pauseIcon = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="#e7e5e4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10 9v6m4-6v6m7-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>`;
-
-  play.innerHTML = disc.paused ? playIcon : pauseIcon;
+function hideLoading() {
+  loading.style.display = 'none';
 }
 
-// Update progress bar
-function updateProgress() {
-  const width = (disc.currentTime / disc.duration) * 100 + '%';
-  progress.style.width = width;
-
-  const minutes = Math.floor(disc.currentTime / 60);
-  const seconds = Math.floor(disc.currentTime % 60).toString().padStart(2, '0');
-  timer.textContent = `${minutes}:${seconds}`;
+function showError(msg) {
+  error.textContent = msg;
+  error.style.display = '';
+  loading.style.display = 'none';
+  player.style.display = 'none';
 }
 
-// Reset the progress
+// --- Player Logic ---
+function loadTrack(idx) {
+  const track = tracks[idx];
+  cover.src = track.cover || '';
+  cover.alt = `${track.title} cover`;
+  title.textContent = track.title || 'Unknown Title';
+  artist.textContent = track.artist || 'Unknown Artist';
+  audio.src = track.src;
+  currentIndex = idx;
+  resetProgress();
+}
+
 function resetProgress() {
-  progress.style.width = 0 + '%';
-  timer.textContent = '0:00';
+  progress.style.width = '0%';
+  currentTimeEl.textContent = '0:00';
+  durationEl.textContent = '0:00';
 }
 
-// Go to the previous song
-function gotoPreviousSong() {
-  songIndex = (songIndex === 0) ? songs.length - 1 : songIndex - 1;
-  const isDiscPlayingNow = !disc.paused;
-  loadSong(songs[songIndex]);
-  resetProgress();
-  if (isDiscPlayingNow) playPauseMedia();
+function playTrack() {
+  audio.play();
+  isPlaying = true;
+  document.getElementById('play-icon').innerHTML = `<path fill="currentColor" d="M6 19h4V5H6zm8-14v14h4V5z"></path>`; // pause icon
 }
 
-// Go to the next song
-function gotoNextSong(playImmediately) {
-  songIndex = (songIndex === songs.length - 1) ? 0 : songIndex + 1;
-  const isDiscPlayingNow = !disc.paused;
-  loadSong(songs[songIndex]);
-  resetProgress();
-  if (isDiscPlayingNow || playImmediately) playPauseMedia();
+function pauseTrack() {
+  audio.pause();
+  isPlaying = false;
+  document.getElementById('play-icon').innerHTML = `<path fill="currentColor" d="M8 5v14l11-7z"></path>`; // play icon
 }
 
-// Change song progress when clicked on progress bar
-function setProgress(ev) {
-  const totalWidth = this.clientWidth;
-  const clickWidth = ev.offsetX;
-  disc.currentTime = (clickWidth / totalWidth) * disc.duration;
+function prevTrack() {
+  currentIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+  loadTrack(currentIndex);
+  playTrack();
+}
+function nextTrack() {
+  currentIndex = (currentIndex + 1) % tracks.length;
+  loadTrack(currentIndex);
+  playTrack();
 }
 
-// Navigate song slider
-function progressSlider(ev) {
-  const isPlaying = !disc.paused;
-  if (isPlaying) disc.pause();
+// --- Event Listeners ---
+playBtn.onclick = () => (isPlaying ? pauseTrack() : playTrack());
+prevBtn.onclick = prevTrack;
+nextBtn.onclick = nextTrack;
 
-  const totalWidth = this.clientWidth;
-  const clickWidth = ev.offsetX;
-  disc.currentTime = (clickWidth / totalWidth) * disc.duration;
+audio.addEventListener('loadedmetadata', () => {
+  durationEl.textContent = formatTime(audio.duration);
+});
+audio.addEventListener('timeupdate', updateProgress);
+audio.addEventListener('ended', nextTrack);
 
-  if (isPlaying) disc.play();
+progressContainer.onclick = (e) => {
+  const percent = e.offsetX / progressContainer.offsetWidth;
+  audio.currentTime = percent * audio.duration;
+};
 
-  // Event listeners for mouse movement and release
-  document.addEventListener('mousemove', slideMoving);
-  document.addEventListener('mouseup', function () {
-    if (isPlaying) disc.play();
-    document.removeEventListener('mousemove', slideMoving);
-  });
+function updateProgress() {
+  if (audio.duration) {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = `${percent}%`;
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+    durationEl.textContent = formatTime(audio.duration);
+  }
 }
 
-// Navigate song slider while moving
-function slideMoving(ev) {
-  const isPlaying = !disc.paused;
-  if (isPlaying) disc.pause();
-
-  const totalWidth = progressContainer.clientWidth;
-  const clickWidth = ev.offsetX;
-  disc.currentTime = (clickWidth / totalWidth) * disc.duration;
-
-  if (isPlaying) disc.play();
+function formatTime(s) {
+  if (isNaN(s)) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec < 10 ? '0' : ''}${sec}`;
 }
 
-// Play/Pause when play button clicked
-play.addEventListener('click', playPauseMedia);
-
-// Various events on disc
-disc.addEventListener('play', updatePlayPauseIcon);
-disc.addEventListener('pause', updatePlayPauseIcon);
-disc.addEventListener('timeupdate', updateProgress);
-disc.addEventListener('ended', gotoNextSong.bind(null, true));
-
-// Go to the next song when the next button clicked
-prev.addEventListener('click', gotoPreviousSong);
-
-// Go to the previous song when the previous button clicked
-next.addEventListener('click', gotoNextSong.bind(null, false));
-
-// Move to a different place in the song
-progressContainer.addEventListener('mousedown', progressSlider);
-
-// Volume Up and Down functions
-function volumeUp() {
-  if (disc.volume < 1) disc.volume += 0.1;
-}
-
-function volumeDown() {
-  if (disc.volume > 0) disc.volume -= 0.1;
-}
-
-// Event listeners for volume buttons
-volup.addEventListener('click', volumeUp);
-voldown.addEventListener('click', volumeDown);
+// --- Start ---
+fetchTracks();

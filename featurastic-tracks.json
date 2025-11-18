@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Track Name",
+    "artist": "Artist Name",
+    "cover": "https://link.to/cover.jpg",
+    "src": "https://link.to/audio.mp3"
+  },
+  {
+    "title": "Second Track",
+    "artist": "Another Artist",
+    "cover": "https://link.to/another-cover.jpg",
+    "src": "https://link.to/another-audio.mp3"
+  }
+]
